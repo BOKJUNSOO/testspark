@@ -34,7 +34,7 @@ services:
     depends_on:
       - spark-master
     ports:
-      - "9081:8081"
+      - "9082:8081"
 
   spark-worker-2:
     <<: *spark-common
@@ -46,7 +46,7 @@ services:
     depends_on:
       - spark-master
     ports:
-      - "9082:8081"
+      - "9083:8081"
 
 
   spark-history:
