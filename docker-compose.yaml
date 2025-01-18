@@ -46,7 +46,7 @@ services:
     depends_on:
       - spark-master
     ports:
-      - "9081:8081"
+      - "9082:8081"
 
 
   spark-history:
