@@ -1,0 +1,62 @@
+x-spark-common:
+  &spark-common
+  image: bitnami/spark:latest
+  volumes:
+    - ./jobs:/opt/bitnami/spark/jobs
+    - ./data:/opt/bitnami/spark/data
+    - ./resources:/opt/bitnami/spark/resources
+    - ./spark-events:/opt/spark-events
+  deploy:
+    resources:
+      limits:
+        memory: 2g
+
+services:
+  spark-master:
+    <<: *spark-common
+    command: bin/spark-class org.apache.spark.deploy.master.Master
+    environment:
+      - SPARK_MODE=master
+      - SPARK_MASTER_PORT=7077
+      - SPARK_MASTER_WEBUI_PORT=8080
+    ports:
+      - "7077:7077"
+      - "9080:8080"
+      - "4444:4040"
+
+  spark-worker-1:
+    <<: *spark-common
+    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_WEBUI_PORT=8081
+    depends_on:
+      - spark-master
+    ports:
+      - "9081:8081"
+
+  spark-worker-2:
+    <<: *spark-common
+    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_WEBUI_PORT=8081
+    depends_on:
+      - spark-master
+    ports:
+      - "9081:8081"
+
+
+  spark-history:
+    <<: *spark-common
+    command: bin/spark-class org.apache.spark.deploy.history.HistoryServer
+    volumes:
+      - ./spark-events:/tmp/spark-events
+    environment:
+      - SPARK_HISTORY_FS_LOGDIRECTORY=file:/tmp/spark-events
+    ports:
+      - "18080:18080"
+    depends_on:
+      - spark-master
