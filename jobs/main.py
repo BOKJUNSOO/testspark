@@ -1,7 +1,7 @@
 from pyspark.sql import SparkSession, Window
 import pyspark.sql.functions as F
 spark = SparkSession.builder \
-                    .master("local") \
+                    .master("local[2]") \
                     .appName("spark_opt") \
                     .config("spark.eventLog.enabled", "true")\
                     .config("spark.eventLog.dir","/opt/bitnami/spark/spark-events")\
