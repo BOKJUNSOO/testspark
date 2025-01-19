@@ -9,7 +9,7 @@ x-spark-common:
   deploy:
     resources:
       limits:
-        memory: 1g
+        memory: 4g
 
 services:
   spark-master:
@@ -23,6 +23,10 @@ services:
       - "7077:7077"
       - "9080:8080"
       - "4444:4040"
+    deploy:
+      resources:
+        limits:
+          memory: 4g
 
   spark-worker-1:
     <<: *spark-common
@@ -37,6 +41,10 @@ services:
       - spark-master
     ports:
       - "9081:8081"
+    deploy:
+      resources:
+        limits:
+          memory: 4g
 
 
   spark-history:
