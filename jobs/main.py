@@ -1,4 +1,4 @@
-from pyspark.sql import SparkSession
+from pyspark.sql import SparkSession, Window
 import pyspark.sql.functions as F
 spark = SparkSession.builder \
                     .master("local") \
@@ -33,6 +33,9 @@ df = spark_df.withColumn("status",
 
 
 df = df.groupBy("class","status","date").agg(F.max(df.character_exp).alias("max_exp"),
-                                             F.sum(df.character_exp).alias("sum_exp"))
-
+                                             F.sum(df.character_exp).alias("sum_exp"),
+                                             F.mean(df.character_exp).alias("mean_exp"))
+df.show()
+hunt = Window.partitionBy("status").orderBy(F.desc("sum_exp"))
+df = df.withColumn("hunt_rank",F.rank().over(hunt))
 df.show()
