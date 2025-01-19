@@ -1,11 +1,12 @@
 from pyspark.sql import SparkSession, Window
 import pyspark.sql.functions as F
 spark = SparkSession.builder \
-                    .master("local[2]") \
+                    .master("spark://spark-master:7077") \
                     .appName("spark_opt") \
                     .config("spark.eventLog.enabled", "true")\
                     .config("spark.eventLog.dir","/opt/bitnami/spark/spark-events")\
                     .config("spark.history.fs.logDirectory","/opt/bitnami/spark/spark-events")\
+                    .config("spark.executor.cores","1")\
                     .config("spark.executor.instances","2")\
                     .getOrCreate()
 target_file = "/opt/bitnami/spark/data/test_data.json"
