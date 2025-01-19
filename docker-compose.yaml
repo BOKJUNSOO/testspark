@@ -35,7 +35,7 @@ services:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
       - SPARK_WORKER_WEBUI_PORT=8081
-      - SPARK_WORKER_CORES=2
+      - SPARK_WORKER_CORES=1
       - SPARK_WORKER_MEMORY=1g
     depends_on:
       - spark-master
@@ -53,7 +53,7 @@ services:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
       - SPARK_WORKER_WEBUI_PORT=8081
-      - SPARK_WORKER_CORES=2
+      - SPARK_WORKER_CORES=1
       - SPARK_WORKER_MEMORY=1g
     depends_on:
       - spark-master
