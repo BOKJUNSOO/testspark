@@ -6,10 +6,8 @@ spark = SparkSession.builder \
                     .config("spark.eventLog.enabled", "true")\
                     .config("spark.eventLog.dir","/opt/bitnami/spark/spark-events")\
                     .config("spark.history.fs.logDirectory","/opt/bitnami/spark/spark-events")\
-                    .config("spark.executor.cores","1")\
-                    .config("spark.executor.instances","1")\
                     .getOrCreate()
-target_file = "/opt/bitnami/spark/data/test_data.json"
+target_file = "/opt/bitnami/spark/data/ranking_678.json"
 df = spark.read.format("json").option("multiLine",True).load(target_file)
 df = df.select(F.explode("ranking").alias("user"))
 df = df.select("user.character_name",
